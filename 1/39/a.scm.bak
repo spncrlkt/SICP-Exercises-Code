@@ -1,0 +1,17 @@
+(define (tan-cf x k)
+	(define (cont-frac n d k)
+		(define (cfrec i)
+			(if (= i k)
+				(/ (n k) (d k))
+				(/ (n i) (- (d i) (cfrec (+ i 1))))))
+			(cfrec 1))
+	(define (num i) 
+		(if (= i 1)
+			x
+			(* x x)))
+	(define (den i)
+			(- (* 2 i) 1))
+	(cont-frac num
+			   den
+			   k))
+(tan-cf 5 5)

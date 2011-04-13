@@ -1,0 +1,12 @@
+(define (sum-of-squares x y) 
+	(+ (* x x) (* y y) ))
+
+(define (sumOfBestOfThree a b c) 
+	(cond ((< a b)	
+			((cond ((< a c) ((sum-of-squares b c)))
+				(else (sum-of-squares a b)))	
+				))
+		  (else b))
+		  
+		  )
+(sumOfBestOfThree 3 4 1)
