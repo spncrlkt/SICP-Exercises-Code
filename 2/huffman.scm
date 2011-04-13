@@ -72,3 +72,13 @@
 	(if (element-of-set? symbol (symbols tree))
 		(get-symbol tree)
 		(error "Encode Symbol - Symbol Not in Library")))
+(define (generate-huffman-tree pairs)
+	(successive-merge (reverse (make-leaf-set pairs))))
+
+(define (successive-merge leaf-set)
+	(if (null? (cddr leaf-set))
+		(make-code-tree (car leaf-set)
+					    (cadr leaf-set))
+		(make-code-tree (car leaf-set)
+		  		        (successive-merge (cdr leaf-set)))))
+		  

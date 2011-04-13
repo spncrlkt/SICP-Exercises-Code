@@ -60,14 +60,22 @@
 		(append (encode-symbol (car message) tree)
 				(encode (cdr message) tree))))
 (define (encode-symbol symbol tree)
-	(define (get-symbol symbol branch currentBits)
-			(cond ((leaf? branch) (if (eq? (symbol-leaf branch) symbol)
-									   currentBits
-									  ))
-   				  ((element-of-set? symbol (left-branch branch))
-				  	 (get-symbol symbol (left-branch branch) (append currentBits '(0))))
-				  ((element-of-set? symbol (right-branch branch))
-				  	 (get-symbol symbol (right-branch branch) (append currentBits '(1))))))
+	(define (get-symbol branch)
+			(cond ((leaf? branch) '())
+   				  ((element-of-set? symbol 
+				  					(symbols (left-branch branch)))
+				  	 (cons 0 (get-symbol (left-branch branch))))
+
+				  ((element-of-set? symbol
+				  					(symbols (right-branch branch)))
+				  	 (cons 1 (get-symbol (right-branch branch))))))
 	(if (element-of-set? symbol (symbols tree))
-		(get-symbol symbol tree '())
+		(get-symbol tree)
 		(error "Encode Symbol - Symbol Not in Library")))
+(define (generate-huffman-tree pairs)
+	(successive-merge (reverse (make-leaf-set pairs))))
+
+(define (successive-merge leaf-set)
+		(make-code-tree (car leaf-set)
+					    (cadr leaf-set)))
+		  
